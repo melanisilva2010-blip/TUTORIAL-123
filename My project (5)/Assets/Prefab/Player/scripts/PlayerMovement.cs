@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 fuerzaPorAplicar;
     private float tiempoDesdeUltimaFuerza;
     private float intervaloTiempo;
+    private float velocidadLateral;
+    private IMovementStrategy strategy;
     #endregion
 
     #region Ciclo de vida del script
@@ -14,8 +16,14 @@ public class PlayerMovement : MonoBehaviour
         fuerzaPorAplicar = new Vector3(0, 0, 0.5f);
         tiempoDesdeUltimaFuerza = 0f;
         intervaloTiempo = 2f;
+        velocidadLateral = 2f;
+        SetStrategy(new MovimientoAcelerado());
     }
 
+    private void Update()
+    {
+        strategy.Move(transform,velocidadLateral);
+    }
     private void FixedUpdate()
     {
         tiempoDesdeUltimaFuerza += Time.fixedDeltaTime;
@@ -27,5 +35,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     #endregion
+
+    #region 
+    public void SetStrategy(IMovementStrategy strategy)
+    {
+        this.strategy = strategy;
+    }
+
+
+    #endregion
+
+
 }
 

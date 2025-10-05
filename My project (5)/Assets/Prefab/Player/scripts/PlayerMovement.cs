@@ -8,26 +8,23 @@ public class PlayerMovement : MonoBehaviour
     private float intervaloTiempo;
     private float velocidadLateral;
     private IMovementStrategy strategy;
+    private Player player;
     #endregion
 
     #region Ciclo de vida del script
     void Start()
     {
-        fuerzaPorAplicar = new Vector3(0, 0, 0.5f);
+        fuerzaPorAplicar = new Vector3(0, 0, 0.300f);
         tiempoDesdeUltimaFuerza = 0f;
         intervaloTiempo = 2f;
         velocidadLateral = 2f;
-        SetStrategy(new MovimientoAcelerado());
+        player = new Player( 5f, 5f );
+        //SetStrategy(new MovimientoAcelerado());
     }
 
-    private void Update()
-    {
-        strategy.Move(transform,velocidadLateral);
-    }
     private void FixedUpdate()
     {
         tiempoDesdeUltimaFuerza += Time.fixedDeltaTime;
-
         if (tiempoDesdeUltimaFuerza >= intervaloTiempo)
         {
             GetComponent<Rigidbody>().AddForce(fuerzaPorAplicar);
@@ -37,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region 
+
+    public void MovePlayer(float input)
+    {
+        strategy.Move(transform, velocidadLateral, 0);
+    }
     public void SetStrategy(IMovementStrategy strategy)
     {
         this.strategy = strategy;
